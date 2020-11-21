@@ -1,7 +1,7 @@
 class Background extends SpriteRenderer{
     //path - pot, s oznaka pomenijo vrednosti na sliki, d vrednosti pa na canvasu
     constructor(path, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight){
-        super(path,sX, sY, sWidth, sHeight, dX,dY, sWidth, sHeight, sWidth, sHeight);
+        super(path,sX, sY, sWidth, sHeight);
 
         //lastnosti backgrounda
         this.posX = dX;
@@ -23,6 +23,10 @@ class Background extends SpriteRenderer{
         if(flappyPos > vrednost){
             this.posX += this.width;
         }
+    }
+
+    move(speed){
+        this.posX = (this.posX- speed)%(this.width/2); //ko pride do max -x pozicije gre spet nazaj na 0, zato se uporablja %
     }
 
 }

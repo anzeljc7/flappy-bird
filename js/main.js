@@ -7,6 +7,7 @@ let readyMessage;
 let gameOver;
 let game;
 let bird;
+let pipes;
 
 //tukaj se inicilaziriajo vse stvari
 function init (){
@@ -21,7 +22,7 @@ function init (){
 
     game = new Game("start", 60);
     bird = new Bird("img/sprite.png",276, 112, 34, 26, 60, 150, 34, 26);
-
+    pipes = new Pipe("img/sprite.png", 553, 0, 502, 0, 53, 400, 53, 400);
     //event listenerji
     canvas.addEventListener("click", ()=>{
         if(game.state == "start"){
@@ -29,8 +30,8 @@ function init (){
             bird.period = 10;
         }
         else if(game.state == "game"){
-            if(!bird.onSkyLimit())
-                bird.fly();
+            if(!bird.onSkyLimit() && game.state!="dead")
+                bird.fly(pipes);
         }
         else if(game.state == "over") {
             game.state="start";
@@ -61,6 +62,7 @@ function draw(){
     ctx.fillRect(0,0,canvas.width, canvas.height);
 
     background.draw(ctx, 3);   //mesto
+    pipes.draw(ctx);
     ground.draw(ctx, 2);    //trava
 
     if(game.state === "start") readyMessage.draw(ctx, 1);   //sporočilo za start
@@ -72,17 +74,38 @@ function draw(){
 
 //tukaj se updejtajo vsi elementi
 function update(){
-    if(game.state === "start" || game.state === "game"){
+    if(game.state === "start" || game.state === "game"){    //animacija se izvaja ali smo na začetku, ali pa med igro
          if(game.frames%bird.period === 0)bird.frame++;
          else if(bird.frame===3) bird.frame=0;
     }
-
     if(game.state === "game"){
         bird.move();
         if(bird.onGround(ground.posY)){
             game.state = "over";
         }
-        
+    
+        if(game.frames%100== 0){
+            console.log(pipes.positions.length);
+            pipes.generate();
+        }
+        if(bird.touchingPipes(pipes))
+            game.state ="dead";
+        pipes.delete();
+
+        pipes.move(1);
+        ground.move(1);
     }
+    else if(game.state==="dead"){
+        bird.move();
+        if(bird.onGround(ground.posY)){
+            game.state = "over";
+        }
+    }
+
+
     game.frames++;
+
+    if(game.frames==181)
+        game.frames = 1;
+
 }
