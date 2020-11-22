@@ -10,15 +10,22 @@
             display:block;
             margin: 0 auto;
         }
+        @font-face {
+        font-family: 'FlappyBirdy';
+        src: url('font/flappyBirdy.ttf');
+    }
     </style>
 </head>
 <body onload ="init()">
     <canvas id="window" width="320" height="480"></canvas>
+
     <script src="js/spriteRenderer.js"></script>
     <script src="js/background.js"></script>
     <script src="js/bird.js"></script>
     <script src="js/pipe.js"></script>
     <script src="js/gameControler.js"></script>
+    <script src="js/score.js"></script>
+    <script src="js/sound.js"></script>
     <script src = "js/main.js"></script>
 </body>
 </html>

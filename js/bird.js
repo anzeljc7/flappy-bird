@@ -47,13 +47,11 @@ class Bird extends SpriteRenderer{
         this.posY+=this.speed;
 
         if(this.speed < 0)
-            this.rotate = -0.115;
-        else if(this.speed >= this.jump)
-            this.rotate = 0.25;
-        else if(this.speed < this.jump)
-            this.rotate = 0.115;
-        
-    
+            this.rotate = -0.055;
+        else{
+            if(this.rotate <0.25)
+                this.rotate += 0.01;
+        }
     }
 
     onGround(groundPosY){ return (this.posY+this.height/2 >= groundPosY) ? 1:0}
@@ -65,18 +63,19 @@ class Bird extends SpriteRenderer{
 
     touchingPipes(pipes){
         for(let pair =0; pair <pipes.positions.length; pair++){
-            console.log("pair", pair);
-            console.log("pipel", pipes.positions.length);
             if((this.posX + this.radius > pipes.positions[pair]["posX"] && this.posX - this.radius < pipes.positions[pair]["posX"]+pipes.width) 
             && (this.posY - this.radius < pipes.positions[pair]["posY"]+pipes.height || this.posY + this.radius > pipes.positions[pair]["posY"] + pipes.height + pipes.space))
                 return 1;
-            else
-                return 0;
-        
         }
-        
-           
         return 0;
+    }
+
+    goThrought(pipes){
+        if(pipes.positions.length >0)
+            return(this.posX >= pipes.positions[0]["posX"]+pipes.width/2 && this.posX <= 1.8+pipes.positions[0]["posX"]+pipes.width/2);
+        
+        else
+            return 0;
     }
 
 }

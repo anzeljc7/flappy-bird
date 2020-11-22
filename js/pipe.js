@@ -37,8 +37,11 @@ class Pipe extends SpriteRenderer{
 
     delete(){   //izbriše pipo, če je ta izven vidnega polja
         if(this.positions.length > 0){
-            if(this.positions[0] < -this.width)
+            if(this.positions[0]["posX"] < -this.width){
+        
                 this.positions.shift();
+            }
+
         }
     }
 }

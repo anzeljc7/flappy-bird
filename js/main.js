@@ -8,6 +8,8 @@ let gameOver;
 let game;
 let bird;
 let pipes;
+let score;
+let sound;
 
 //tukaj se inicilaziriajo vse stvari
 function init (){
@@ -19,25 +21,35 @@ function init (){
     ground = new Background("img/sprite.png",276, 0, 224, 112, 0, 368, 224, 112);
     readyMessage = new Background("img/sprite.png",0, 228, 173, 152, 320/2-173/2, 85 , 173, 152);
     gameOver = new Background("img/sprite.png",175, 228, 225, 202, 320/2-225/2, 85 , 225, 202);
+    medal = new Background("img/sprite.png");
 
     game = new Game("start", 60);
     bird = new Bird("img/sprite.png",276, 112, 34, 26, 60, 150, 34, 26);
     pipes = new Pipe("img/sprite.png", 553, 0, 502, 0, 53, 400, 53, 400);
+    score = new Score();
+    sound = new Sound();
+
     //event listenerji
-    canvas.addEventListener("click", ()=>{
+    canvas.addEventListener("click", (e)=>{
+        let rect = canvas.getBoundingClientRect();
+        game.mouseX = e.clientX - rect.left;
+        game.mouseY = e.clientY - rect.top;
+
         if(game.state == "start"){
+            sound.playSound("swooshing");
             game.state="game";
-            bird.period = 10;
+            bird.period = 6;
         }
         else if(game.state == "game"){
+            sound.playSound("flap");
             if(!bird.onSkyLimit() && game.state!="dead")
                 bird.fly(pipes);
         }
         else if(game.state == "over") {
-            game.state="start";
-            game.reset(bird);
-            bird.period = 5;
+            if(game.checkMousePos(117, 253, 83, 29))
+                game.reset(bird, pipes, score);
         }
+
     });
     requestAnimationFrame(loop);//po tem klicu se izvaja update
 }
@@ -65,11 +77,16 @@ function draw(){
     pipes.draw(ctx);
     ground.draw(ctx, 2);    //trava
 
-    if(game.state === "start") readyMessage.draw(ctx, 1);   //sporočilo za start
+    if(game.state === "start") {
+        readyMessage.draw(ctx, 1);   //sporočilo za start
+    }
+    if(game.state === "over"){
+        gameOver.draw(ctx, 1);
+    }
 
-    if(game.state === "over") gameOver.draw(ctx, 1);
-
+    score.draw(ctx, game.state);
     bird.draw(ctx);
+    
 }
 
 //tukaj se updejtajo vsi elementi
@@ -82,30 +99,38 @@ function update(){
         bird.move();
         if(bird.onGround(ground.posY)){
             game.state = "over";
+            sound.playSound("die")
         }
     
-        if(game.frames%100== 0){
-            console.log(pipes.positions.length);
+        if(game.frames%90== 0){
             pipes.generate();
         }
-        if(bird.touchingPipes(pipes))
+        if(bird.touchingPipes(pipes)){
             game.state ="dead";
-        pipes.delete();
+            sound.playSound("hit");
+        }
+        pipes.delete(score.value);
+        
+        if(bird.goThrought(pipes)){
+            score.changeValue();
+            sound.playSound("score");
+        }
 
-        pipes.move(1);
-        ground.move(1);
+        pipes.move(1.8);
+        ground.move(1.8);
     }
     else if(game.state==="dead"){
         bird.move();
         if(bird.onGround(ground.posY)){
             game.state = "over";
+            sound.playSound("die");
         }
     }
 
 
     game.frames++;
 
-    if(game.frames==181)
+    if(game.frames==91)
         game.frames = 1;
 
 }

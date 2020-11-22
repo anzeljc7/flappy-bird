@@ -14,14 +14,7 @@ class Background extends SpriteRenderer{
     draw(ctx, times){
         //v for pogoju se ponavlja drawSprite, noter dobi na katere kordinate mora sliko narisat
         for(let i=0; i<times; i++){
-            super.draw(ctx, (this.posX + i*this.sWidth), this.posY);
-        }
-    }
-
-    setRepeat(flappyPos){
-        //Dobi vrednost flappya in glede na njo potem kalkulira kako se more stvar izrisat
-        if(flappyPos > vrednost){
-            this.posX += this.width;
+            super.draw(ctx, (this.posX + i*this.sWidth-10), this.posY);
         }
     }
 
