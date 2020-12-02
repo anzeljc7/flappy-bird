@@ -11,7 +11,7 @@ class Pipe extends SpriteRenderer{
         this.which = [{sX1, sY1}, {sX2, sY2 }]; //izbiramo med zgorjno (1) in spodnjo(2) pipo
 
         this.positions = Array(0);   //2d tabla, ki hrani pozicije vseh pip
-        this.space = 85;    //koliko prostora je med pipama
+        this.space = 88;    //koliko prostora je med pipama
 
         this.maxPosY = -150; //max pozicija, do katere lahko gre gor gornja pipa
     }

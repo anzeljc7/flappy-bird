@@ -14,12 +14,17 @@ class Background extends SpriteRenderer{
     draw(ctx, times){
         //v for pogoju se ponavlja drawSprite, noter dobi na katere kordinate mora sliko narisat
         for(let i=0; i<times; i++){
-            super.draw(ctx, (this.posX + i*this.sWidth-10), this.posY);
+            super.draw(ctx, (this.posX + i*this.sWidth), this.posY);
         }
     }
 
     move(speed){
         this.posX = (this.posX- speed)%(this.width/2); //ko pride do max -x pozicije gre spet nazaj na 0, zato se uporablja %
+    }
+
+    animatedMove(){
+        if(this.posY < 85)
+            this.posY+=15;
     }
 
 }

@@ -17,5 +17,8 @@ class Sound{
         this[what].play();
     }
 
-
+    stopSound(what){
+        this[what].pause();
+        this[what].currentTime = 0;
+    }
 }
