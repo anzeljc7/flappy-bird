@@ -22,7 +22,7 @@ class Background extends SpriteRenderer{
         this.posX = (this.posX- speed)%(this.width/2); //ko pride do max -x pozicije gre spet nazaj na 0, zato se uporablja %
     }
 
-    animatedMove(){
+    animatedMove(){         //če je manjše od željene pozicije se premika
         if(this.posY < 85)
             this.posY+=15;
     }

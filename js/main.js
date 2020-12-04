@@ -1,39 +1,9 @@
-//gloablne spremenljivke
-let canvas;
-let ctx;
-let background;
-let ground;
-let readyMessage;
-let gameOver;
-let game;
-let bird;
-let pipes;
-let score;
-let sound;
-let high; 
 
-//tukaj se inicilaziriajo vse stvari
 function init (){
-    //inicializacija canvas in contexta
-    canvas = document.getElementById("window");
-    ctx = canvas.getContext("2d");
-                                //path, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight,
-    background = new Background("img/flapy.png",292, 45, 287, 400, 0, 0, 287, 400); 
-    ground = new Background("img/flapy.png",584, 0, 336, 111, 0, 369, 336, 111);
-    readyMessage = new Background("img/flapy.png",527, 517, 196, 183, 320/2-196/2, -183 , 196, 183);
-    gameOver = new Background("img/flapy.png",292, 517, 233, 200, 320/2-233/2, -200 , 233, 200);
-    medal = new Background("img/sprite.png");
-    high = new Background("img/flapy.png",0, 517, 31, 15, 320/2-233/2+141,85+109, 31, 15);
+    //globalne spremenljivke so v drugi datoteki
 
-    game = new Game("start", 60);       //762
-    bird = new Bird("img/flapy.png",230, 690, 33, 23, 60, 180, 33, 23);
-                                    //sx1  sy1  sx2  sy2 sWidth sHeight dWidth dHeight
-    pipes = new Pipe("img/flapy.png", 0, 646, 56, 646, 52, 319, 53, 400);
-    score = new Score();
-    sound = new Sound();
-
-    //event listenerji
-    canvas.addEventListener("click", (e)=>{
+    //event listener za klik miške
+    window.addEventListener("click", (e)=>{
         let rect = canvas.getBoundingClientRect();
         game.mouseX = e.clientX - rect.left;
         game.mouseY = e.clientY - rect.top;
@@ -55,7 +25,8 @@ function init (){
 
     });
 
-    canvas.addEventListener("mouseup", ()=>{
+    //event listener za release miške
+    window.addEventListener("mouseup", ()=>{
         sound.stopSound("flap");
         console.log("stop");
     });
@@ -89,17 +60,13 @@ function draw(){
         readyMessage.draw(ctx, 1);   //sporočilo za start
     
     if(game.state == "over"){
-        gameOver.draw(ctx, 1);
+        gameOver.draw(ctx, 1);  //game over
         if(score.changed){
-            high.draw(ctx, 1);
+            high.draw(ctx, 1);  //new za high score
         }
     }
-    
-    score.draw(ctx, game.state);
+    score.draw(ctx, game.state);    //game.state pove kako se riše score    
     bird.draw(ctx);
-
-
-    
 }
 
 //tukaj se updejtajo vsi elementi
@@ -114,45 +81,45 @@ function update(){
         }
     }
     if(game.state == "game"){
-        bird.move();
-        pipes.delete(score.value);
+        bird.move();    
+        pipes.delete(score.value);  
         pipes.move(2);  //speed mora biti cela številka, drugače se pipe in ground ne nariše lepo
         ground.move(2);
 
-        if(bird.onGround(ground.posY)){
+        if(bird.onGround(ground.posY)){ //če pade na tla umre
             game.state = "over";
             score.changeScoreOption(0);
             sound.playSound("die")
         }
     
-        if(game.frames%90== 0)
+        if(game.frames%90== 0)  //vsakih 90 framov se nariše pipa
             pipes.generate();
         
-        if(bird.touchingPipes(pipes)){
+        if(bird.touchingPipes(pipes)){     //colission med pipo in flapijem + zaigra se zvok
             sound.playSound("hit");
             game.state ="dead";
         }
-        
-        if(bird.goThrought(pipes)){
+
+        if(bird.goThrought(pipes)){     //če gre čez pipo, dobi točko + zaigra se zvok
             score.changeValue();
             sound.playSound("score");
         }
-    }
-    else if(game.state=="dead"){
+    }   
+    else if(game.state=="dead"){            //dead je state pred over
         bird.move();
-        if(score.value > score.best){
-            score.setBest();
+        if(score.value > score.best){       //če je score večji od high scora ga nastavimo na best
+            score.setBest();                //changed pove ali je potrebno narisati new zdraven best
             score.changed = true;
         }
-        else if(score.value == score.best)
+        else if(score.value == score.best)  //tudi če je enak ga je treba nastavit, saj se vrednost ne shrani
              score.setBest();
-        if(bird.onGround(ground.posY)){
-            game.state = "over";
+        if(bird.onGround(ground.posY)){     
+            game.state = "over";            //ko je mrtev in pade na tla je game over + zaigra se sound
             sound.playSound("die");
-            score.changeScoreOption(0);
+            score.changeScoreOption(0);     //zamenja se način izpisovanja scora
         }
-    }
-    else if(game.state == "over"){
+    }   
+    else if(game.state == "over"){          //ko je konec igre se kliče animacija za game over okenček in score
         gameOver.animatedMove();
         score.animatedMove();
     }
@@ -160,7 +127,7 @@ function update(){
 
     game.frames++;
 
-    if(game.frames==91)
+    if(game.frames==91)     //uporablja se 1-90 framov, saj je tako najlažje za vse animacije ko
         game.frames = 1;
 
 }
@@ -168,7 +135,8 @@ function update(){
 
 
 
-/*
+/*  
+STAREJŠI SPRITE SHEET   
     ackground = new Background("img/sprite.png",0, 0, 275, 225, 0, 255, 275, 225); 
     ground = new Background("img/sprite.png",276, 0, 224, 112, 0, 368, 224, 112);
     readyMessage = new Background("img/sprite.png",0, 229, 174, 152, 320/2-174/2+10, -152 , 174, 152);

@@ -9,15 +9,32 @@
             border:1px solid #444;
             display:block;
             margin: 0 auto;
+            position:relative;
+            top:50px;
+
         }
         @font-face {
         font-family: 'FlappyBirdy';
         src: url('font/flappyBirdy.ttf');
-    }
+        }
+        img{
+            position:absolute;
+            top:8px;
+            left:0;
+            right:0;
+            bottom:0;
+            margin: 0 auto;
+    
+        }
+        body{
+            background-color:#eccf7f;
+        }
     </style>
 </head>
 <body onload ="init()">
     <canvas id="window" width="320" height="480"></canvas>
+
+   <!--<img src="img/bg.png" width="375 " height="708" alt="">-->
 
     <script src="js/spriteRenderer.js"></script>
     <script src="js/background.js"></script>
@@ -26,6 +43,7 @@
     <script src="js/gameControler.js"></script>
     <script src="js/score.js"></script>
     <script src="js/sound.js"></script>
+    <script src="js/global.js"></script>
     <script src = "js/main.js"></script>
 </body>
 </html>

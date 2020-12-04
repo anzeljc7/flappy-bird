@@ -1,6 +1,6 @@
 class Bird extends SpriteRenderer{
     //privatne lastnosti
-    #up = 0.5;
+    #up = 0.5;  //za začetno animacijo
 
     constructor(path, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight){
         super(path,0, 0, sWidth, sHeight);
@@ -37,6 +37,7 @@ class Bird extends SpriteRenderer{
         super.adraw(ctx,this.animation[this.frame].X, this.animation[this.frame].Y, -this.width/2, -this.height/2);
         ctx.restore();     
     }
+
     startMoving(){
         this.posY+=this.#up;
         if(this.posY > 185 || this.posY < 175)
@@ -45,24 +46,24 @@ class Bird extends SpriteRenderer{
 
     //funkcija za letenje 
     fly(){
-        this.speed =- this.jump;
+        this.speed =- this.jump;    
     }
 
     //funkcija za premikanje (padanje dol in preverjanje kako se mora rotirat bird)
     move(){
-        this.speed+=this.gravity;
-        this.posY+=this.speed;
+        this.speed+=this.gravity;   //vedno bolj ga vleče dol
+        this.posY+=this.speed;      //ga potisne gor če je negativno oz. če je pozitivno ga vleče dol
 
-        if(this.speed < 0)
+        if(this.speed < 0)          //če bo ga potisnilo gor bo se rotiral malenkost gor
             this.rotate = -0.055;
-        else if(this.speed >0.15){
+        else if(this.speed >0.15){          //ko bo padal pa se bo postopoma začel obračati da bo gledal proti groundu
             if(this.rotate <0.25)
                 this.rotate += 0.012;
         }
     }
 
     //ali je bird na tleh
-    onGround(groundPosY){ return (this.posY+this.height/2 >= groundPosY) ? 1:0}
+    onGround(groundPosY){ return (this.posY+this.height/2 >= groundPosY) ? 1:0} 
 
     //flappy nesme iti neskončno v nebo
     onSkyLimit(){ 
@@ -71,7 +72,7 @@ class Bird extends SpriteRenderer{
     }
 
 
-    touchingPipes(pipes){
+    touchingPipes(pipes){                   //radius se uporablja, saj je flappy v obliki ene debele kepe :)
         if(pipes.positions.length > 0)
             if((this.posX + this.radius > pipes.positions[0]["posX"] && this.posX - this.radius < pipes.positions[0]["posX"]+pipes.width) 
                 && (this.posY - this.radius < pipes.positions[0]["posY"]+pipes.height || this.posY + this.radius > pipes.positions[0]["posY"] + pipes.height + pipes.space))
