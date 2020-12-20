@@ -1,0 +1,5 @@
+- Če vam je še zmeraj pretežko pojdite v file main.js in
+v event listenerju spremenite game.pipeSpace, nahaja se na 97. vrstici
+
+- Če želite sprobat use medalje pojdite v draw funkcijo in spremenite pogoje
+za risanje, nahaja se na vrstici 134 v main.js

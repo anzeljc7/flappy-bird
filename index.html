@@ -4,37 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flappy Bird</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
+
     <style>
         canvas{
-            border:1px solid #444;
+            border:1px solid #553000;
             display:block;
             margin: 0 auto;
             position:relative;
-            top:50px;
-
+            cursor:pointer;
         }
+
         @font-face {
         font-family: 'FlappyBirdy';
         src: url('font/flappyBirdy.ttf');
         }
-        img{
-            position:absolute;
-            top:8px;
-            left:0;
-            right:0;
-            bottom:0;
-            margin: 0 auto;
-    
-        }
+        
         body{
             background-color:#eccf7f;
         }
+        .settings{
+            display:flex;
+            justify-content:center;
+            padding:20px 0;
+        }
+
+        .settings > button{
+            margin:10px 10px;
+            background-color:#E86101;
+            border-radius:10px;
+            border-color:#553000;
+            padding:5px;
+            cursor:pointer;
+        }
+        i{
+            font-size:x-large;
+            color: #f3f3f3;
+            text-shadow: -2px 0 #553000, 0 2px #553000, 2px 0 #553000, 0 -2px #553000;
+        }
+    
     </style>
 </head>
 <body onload ="init()">
+    <div class = "settings">
+        <button id="mode" title="Dan/Noč"><i class="fas fa-paint-roller" ></i></button>
+        <button id="flapy" title="Flappy"><i class="fas fa-paint-brush" ></i></button>
+        <button id="sound" title="Zvok"><i class="fas fa-volume-up" ></i></button>
+        <button id="difficulty" title="Težavnost"><i class="far fa-smile" ></i></button>
+        
+    </div>
     <canvas id="window" width="320" height="480"></canvas>
-
-   <!--<img src="img/bg.png" width="375 " height="708" alt="">-->
 
     <script src="js/spriteRenderer.js"></script>
     <script src="js/background.js"></script>
