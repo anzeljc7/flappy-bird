@@ -125,7 +125,7 @@ function loop(time) {
         draw();
         update();
 
-    }, 1000 / 120);
+    }, 1000 / 80);
 
 
 
