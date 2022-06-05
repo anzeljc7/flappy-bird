@@ -119,17 +119,18 @@ function init() {
 }
 
 function loop(time) {
-    draw();
-    update();
-
-    if (game.time - game.lastFrameTime < game.FRAME_MIN_TIME) {
-        //skip the frame if the call is too early
+    setTimeout(function () {
         requestAnimationFrame(loop);
-        return; // return as there is nothing to do
-    }
-    game.lastFrameTime = time; // remember the time of the rendered frame
-    requestAnimationFrame(loop);
+        // animating/drawing code goes here
+        draw();
+        update();
+
+    }, 1000 / 80);
+
+
+
 }
+
 
 function draw() {
     //nastavi ozadje  NUJNO MORA BITI TU, DRUGAČE SO TRESLJAJI
